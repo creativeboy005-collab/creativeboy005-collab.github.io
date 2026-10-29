@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://creativeboy005-collab.github.io/sitemap.xml

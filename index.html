@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Final year and mini engineering projects with working hardware, code, report, PPT and viva prep. ESP32, Arduino and IoT projects plus custom PCB design. Order on WhatsApp.">
+<meta name="keywords" content="final year project, engineering project, ESP32 project, Arduino project, IoT project, mini project, diploma project, PCB design, B.Tech project">
+<meta name="theme-color" content="#0f3a29">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Volt Bench | Final Year Projects + PCB Design">
+<meta property="og:description" content="Working ESP32 & Arduino projects with code, report, PPT and viva support. Custom PCB design too.">
+<meta property="og:image" content="https://creativeboy005-collab.github.io/img/U5.jpg">
+<meta property="og:url" content="https://creativeboy005-collab.github.io/">
+<link rel="canonical" href="https://creativeboy005-collab.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f3a29'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23e5483c'/%3E%3C/svg%3E">
+<title>Volt Bench | ESP32 & Arduino Final Year Projects + PCB Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px/1.5 system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: a clean light lab bench. Sections are board regions, cards are component footprints with silkscreen designators; deep solder-mask green as the anchor, copper as the accent. */
+:root{
+  --bg:#f6f8f6; --surface:#ffffff; --surface-2:#eef3ef;
+  --ink:#10241b; --muted:#5a6d63; --line:#dbe4de;
+  --mask:#0f3a29; --mask-2:#15513a;
+  --copper:#c26b2b; --copper-soft:#fbeee3; --gold:#d79a3a;
+  --ok:#1f9d5c; --led:#e5483c;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+  --sec:clamp(80px,11vw,136px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.7;
+  background-image:radial-gradient(rgba(15,58,41,.07) 1px,transparent 1px);background-size:26px 26px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0;color:var(--ink)}
+h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700;margin-top:16px}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--copper);display:flex;align-items:center;gap:12px;font-weight:500}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--copper)}
+section{padding-block:var(--sec)}
+.lead{color:var(--muted);max-width:60ch;margin:20px 0 0;font-size:1.05rem}
+.head{margin-bottom:56px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;text-decoration:none;border-radius:999px;padding:16px 28px;border:1.5px solid transparent;transition:transform .15s,background .15s,border-color .15s,box-shadow .15s;cursor:pointer;font-family:var(--f-body);font-size:1rem}
+.btn:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+.btn-main{background:var(--mask);color:#fff;box-shadow:0 10px 24px rgba(15,58,41,.22)}
+.btn-main:hover{background:var(--mask-2);transform:translateY(-2px)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:var(--surface)}
+.btn-ghost:hover{border-color:var(--mask)}
+.wa-ico{width:20px;height:20px;flex:none}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(246,248,246,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:16px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--f-display);font-weight:700;font-size:1.08rem}
+.brand-chip{width:32px;height:32px;border-radius:6px;background:var(--mask);display:grid;place-items:center}
+.brand-chip::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--led);box-shadow:0 0 10px var(--led);animation:blink 2.4s infinite}
+@keyframes blink{0%,70%,100%{opacity:1}80%{opacity:.25}}
+.nav-links{display:flex;gap:30px;font-size:.95rem;color:var(--muted);font-weight:600}
+.nav-links a{text-decoration:none}
+.nav-links a:hover{color:var(--ink)}
+.nav .btn{padding:10px 18px;font-size:.92rem}
+@media (max-width:900px){.nav-links{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding-block:clamp(56px,8vw,110px) clamp(64px,8vw,110px)}
+.hero-bg{position:absolute;inset:0;background:
+  radial-gradient(600px 420px at 78% 42%,rgba(31,157,92,.16),transparent 70%),
+  radial-gradient(420px 320px at 92% 90%,rgba(194,107,43,.12),transparent 70%),
+  radial-gradient(500px 400px at 5% 0%,rgba(31,157,92,.07),transparent 70%);}
+.hero-bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(15,58,41,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(15,58,41,.06) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 70% 45%,#000 10%,transparent 65%);mask-image:radial-gradient(ellipse at 70% 45%,#000 10%,transparent 65%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero-text{min-width:0}
+.hero h1{font-size:clamp(2.2rem,4.8vw,3.9rem);font-weight:800;letter-spacing:-.015em;margin-top:22px}
+.hero h1 em{font-style:normal;color:var(--copper)}
+.hero-sub{font-size:clamp(1.05rem,1.5vw,1.18rem);color:var(--muted);max-width:50ch;margin:24px 0 34px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px}
+.promise{display:flex;flex-wrap:wrap;gap:12px 26px;margin-top:34px;font-family:var(--f-mono);font-size:.84rem;color:var(--muted)}
+.promise span{display:flex;align-items:center;gap:9px}
+.promise span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(31,157,92,.15)}
+.live{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;color:var(--ok);background:rgba(31,157,92,.08);border:1px solid rgba(31,157,92,.25);padding:6px 13px;border-radius:99px;margin-bottom:20px}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);animation:blink 1.4s infinite}
+
+.showcase{position:relative;height:520px;perspective:1400px;min-width:0}
+.ring{position:absolute;left:50%;top:50%;border-radius:50%;border:1px dashed rgba(15,58,41,.18);transform:translate(-50%,-50%)}
+.ring.r1{width:440px;height:440px;animation:spin 60s linear infinite}
+.ring.r2{width:320px;height:320px;border-style:solid;border-color:rgba(194,107,43,.18);animation:spin 40s linear infinite reverse}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.floaty{position:absolute;inset:0;display:grid;place-items:center;animation:bob 6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-14px)}}
+.board3d{width:min(420px,88%);transform:rotateX(calc(54deg + var(--ty,0deg))) rotateZ(calc(-34deg + var(--tx,0deg)));transform-style:preserve-3d;transition:transform .3s ease-out;filter:drop-shadow(0 50px 40px rgba(16,36,27,.28))}
+.board3d svg{display:block;width:100%;height:auto;overflow:visible}
+.led-glow{animation:blink 2.4s infinite}
+.led-glow.b,.led-blue{animation:blink 1.1s infinite}
+.fcard{position:absolute;z-index:2;background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.95);box-shadow:0 18px 40px rgba(16,36,27,.13);border-radius:16px;padding:14px 18px;display:grid;gap:4px;animation:bob 5s ease-in-out infinite}
+.fcard small{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;color:var(--muted)}
+.fcard strong{font-family:var(--f-display);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.f1{left:0;top:6%;animation-delay:-1s}.f1 .spark{width:120px;height:30px}
+.f2{right:0;top:12%;animation-delay:-2.5s}
+.f2 em{font-style:normal;font-family:var(--f-mono);font-size:.74rem;color:var(--ok)}
+.bars{display:flex;gap:3px;align-items:flex-end;height:16px}.bars i{width:5px;border-radius:2px;background:var(--ok)}
+.bars i:nth-child(1){height:5px}.bars i:nth-child(2){height:8px}.bars i:nth-child(3){height:12px}.bars i:nth-child(4){height:16px;opacity:.35}
+.f3{left:4%;bottom:10%;animation-delay:-3.5s}
+.tog-row{display:flex;align-items:center;gap:14px}
+.tog{width:38px;height:22px;border-radius:99px;background:#cfd8d3;position:relative;transition:background .3s}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .3s}
+.tog.on{background:var(--ok)}.tog.on::after{transform:translateX(16px)}
+.f4{right:2%;bottom:6%;display:flex;align-items:center;gap:12px;animation-delay:-.5s}
+.f4 strong{font-size:.95rem}
+.f4>div{display:grid;gap:2px}
+.play{width:38px;height:38px;border-radius:50%;background:var(--copper);display:grid;place-items:center;flex:none}
+.play::after{content:"";border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+@media (max-width:1000px){.hero .wrap{grid-template-columns:1fr;gap:20px}.showcase{height:440px}.ring.r1{width:360px;height:360px}.ring.r2{width:260px;height:260px}}
+@media (max-width:520px){.showcase{height:380px}.fcard{padding:10px 13px}.fcard strong{font-size:.95rem}.f1 .spark{width:90px}.f4 strong{font-size:.82rem}.ring.r1{width:300px;height:300px}}
+
+/* project slider */
+.slider{position:relative;margin:-30px -30px 4px;border-radius:var(--r) var(--r) 0 0;overflow:hidden;background:var(--surface-2);z-index:1}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;aspect-ratio:16/9}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;margin:0;scroll-snap-align:start;position:relative;min-width:0}
+.slide img,.slide svg{width:100%;height:100%;object-fit:cover;display:block}
+.slide figcaption{position:absolute;right:10px;bottom:10px;font-family:var(--f-mono);font-size:.66rem;color:#fff;background:rgba(16,36,27,.62);padding:3px 9px;border-radius:99px;letter-spacing:.04em}
+.img-tag{position:absolute;left:12px;top:12px;z-index:2;font-family:var(--f-mono);font-size:.68rem;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.94);color:var(--muted);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.img-tag.real{background:var(--mask);color:#7fe0a9}
+.sl-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);font-size:1.1rem;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.15);opacity:0;transition:opacity .2s}
+.sl-prev{left:10px}.sl-next{right:10px}
+.slider:hover .sl-btn,.sl-btn:focus-visible{opacity:1}
+@media (hover:none){.sl-btn{opacity:.9;width:30px;height:30px}}
+.dots{position:absolute;left:12px;bottom:12px;z-index:2;display:flex;gap:5px}
+.dots i{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.6);box-shadow:0 0 0 1px rgba(16,36,27,.15);transition:width .25s,background .25s}
+.dots i.on{width:20px;background:#fff}
+
+/* ticker */
+.ticker{border-block:1px solid var(--line);background:var(--surface);overflow:hidden;padding-block:20px}
+.ticker-track{display:flex;width:max-content;animation:tick 40s linear infinite;font-family:var(--f-mono);font-size:.88rem;color:var(--muted);white-space:nowrap}
+.ticker-track span{display:flex;align-items:center;gap:44px;padding-right:44px}
+.ticker-track span::after{content:"◆";color:var(--copper);font-size:.6rem}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* projects */
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:28px;flex-wrap:wrap;margin-bottom:52px}
+.filters{display:flex;flex-wrap:wrap;gap:10px}
+.chip{font-family:var(--f-mono);font-size:.84rem;padding:9px 16px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.chip:hover{border-color:var(--mask)}
+.chip[aria-pressed="true"]{background:var(--mask);color:#fff;border-color:var(--mask)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px}
+@media (max-width:420px){.grid{grid-template-columns:1fr}}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:16px;min-width:0;transition:border-color .2s,transform .2s,box-shadow .2s}
+.card:hover{border-color:#b8cbbf;transform:translateY(-4px);box-shadow:0 20px 40px rgba(16,36,27,.08)}
+.card::before{content:"";position:absolute;inset:9px;border:1px dashed rgba(15,58,41,.1);border-radius:6px;pointer-events:none}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.desig{font-family:var(--f-mono);font-size:.78rem;color:var(--copper);letter-spacing:.06em;font-weight:600}
+.tag{font-family:var(--f-mono);font-size:.72rem;padding:4px 10px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.tag.hot{background:#fde8e6;color:var(--led)}
+.card h3{font-size:1.15rem;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:.96rem}
+.parts{display:flex;flex-wrap:wrap;gap:7px}
+.parts span{font-family:var(--f-mono);font-size:.75rem;background:var(--copper-soft);color:var(--copper);padding:4px 9px;border-radius:4px}
+.diff{display:flex;gap:5px;align-items:center;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.diff i{width:16px;height:5px;border-radius:2px;background:var(--line);margin-left:2px}
+.diff i.on{background:var(--mask)}
+.price-row{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);padding-top:18px;gap:12px}
+.price-row div{display:flex;flex-direction:column}
+.price-row small{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.price-row strong{font-family:var(--f-display);font-size:1.2rem;font-variant-numeric:tabular-nums}
+.credits{flex-basis:100%;font-size:.74rem;color:var(--muted);margin:6px 0 0;line-height:1.6}
+.credits a{color:inherit}
+.card .watch{font-size:.88rem;font-weight:600;color:var(--led);text-decoration:none;margin-top:-6px}
+.card .watch:hover{text-decoration:underline}
+.card .order{font-weight:700;font-size:.95rem;color:var(--mask);text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+.card .order:hover{color:var(--copper)}
+
+/* pcb section */
+.pcb-sec{background:linear-gradient(180deg,transparent,rgba(31,157,92,.05) 30%,transparent)}
+.pcb-show{display:grid;grid-template-columns:1.7fr 1fr;gap:28px;align-items:stretch}
+@media (max-width:960px){.pcb-show{grid-template-columns:1fr}}
+.win{background:#0d1512;border-radius:16px;overflow:hidden;box-shadow:0 40px 80px rgba(16,36,27,.22),0 0 0 1px rgba(16,36,27,.08);min-width:0}
+.win-bar{display:flex;align-items:center;gap:8px;padding:12px 14px;background:#17211c;flex-wrap:wrap}
+.wd{width:11px;height:11px;border-radius:50%;background:#ff5f57}.wd:nth-child(2){background:#febc2e}.wd:nth-child(3){background:#28c840}
+.win-tabs{display:flex;gap:4px;margin-left:12px;flex-wrap:wrap}
+.wtab{font:inherit;font-size:.8rem;font-weight:600;color:#9fb3a8;background:transparent;border:0;padding:6px 12px;border-radius:8px;cursor:pointer}
+.wtab[aria-selected="true"]{background:#2a3a32;color:#fff}
+.rec{margin-left:auto;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;color:#7fe0a9}
+.win-body{position:relative;aspect-ratio:960/500;max-width:100%;background:#000}
+.pcb-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 100%;opacity:0;transition:opacity .5s}
+.pcb-vid.on{opacity:1}
+.vid-ctrl{position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;padding:6px 12px 6px 6px;border-radius:99px;font-family:var(--f-mono);font-size:.72rem}
+.vid-ctrl button{width:28px;height:28px;border-radius:50%;border:0;background:#fff;color:#10241b;font-size:.7rem;cursor:pointer;font-weight:800}
+.pcb-spec{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.ps-head{display:grid;gap:4px}.ps-head small{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;color:var(--copper)}
+.ps-head strong{font-family:var(--f-display);font-size:1.15rem}
+.pcb-spec ul{list-style:none;margin:0;padding:0;display:grid}
+.pcb-spec li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.pcb-spec li span{color:var(--muted)}.pcb-spec li b{text-align:right}
+.ps-note{margin:auto 0 0;font-size:.85rem;color:var(--muted);background:var(--surface-2);padding:12px 14px;border-radius:10px}
+.gal{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:28px 2px 8px;scrollbar-width:thin}
+.gi{flex:0 0 clamp(220px,26vw,300px);align-self:flex-start;scroll-snap-align:start;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000;cursor:zoom-in;position:relative;font:inherit}
+.gi img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;transition:transform .4s}
+.gi:hover img{transform:scale(1.06)}
+.gi span{position:absolute;left:10px;bottom:10px;font-family:var(--f-mono);font-size:.68rem;color:#fff;background:rgba(16,36,27,.7);padding:3px 9px;border-radius:99px}
+.pcb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+@media (max-width:960px){.pcb-grid{grid-template-columns:1fr}}
+.pcb-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:30px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.pcb-card h3{font-size:1.05rem}
+.deliv{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.deliv li{display:flex;align-items:center;gap:14px;font-size:.94rem}
+.deliv b{font-family:var(--f-mono);font-size:.7rem;width:44px;text-align:center;padding:5px 0;border-radius:6px;background:var(--mask);color:#7fe0a9;flex:none}
+.pflow{list-style:none;margin:0;padding:0;display:grid;gap:16px;counter-reset:f}
+.pflow li{display:grid;grid-template-columns:30px 1fr;gap:2px 12px;counter-increment:f}
+.pflow li::before{content:counter(f);grid-row:span 2;width:30px;height:30px;border-radius:50%;border:2px solid var(--copper);color:var(--copper);display:grid;place-items:center;font-family:var(--f-mono);font-size:.8rem;font-weight:600}
+.pflow b{font-size:.95rem}.pflow span{color:var(--muted);font-size:.88rem}
+.pp{display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.pp span{font-weight:700}.pp small{color:var(--muted);font-size:.82rem;grid-column:1}
+.pp strong{grid-row:1/3;grid-column:2;align-self:center;font-family:var(--f-display);font-size:1.15rem}
+.pcb-price .btn{margin-top:auto;justify-content:center}
+.pcb-note{margin-top:28px;border:1.5px dashed #e3b994;background:var(--copper-soft);border-radius:12px;padding:22px 26px;display:grid;gap:6px}
+.pcb-note strong{font-family:var(--f-display);font-size:1rem}
+.pcb-note span{color:var(--muted);font-size:.94rem}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(6,16,11,.88);display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));cursor:zoom-out}
+.lb[hidden]{display:none}
+.lb img{max-width:min(1100px,100%);max-height:86vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lb-x{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:calc(16px + env(safe-area-inset-right,0px));width:40px;height:40px;border-radius:50%;border:0;background:#fff;font-size:1rem;cursor:pointer}
+
+/* why pcb + ordering assistance */
+.h3big{font-family:var(--f-display);font-size:clamp(1.4rem,2.8vw,2rem);font-weight:700;margin-top:14px}
+.why{margin-top:72px}
+.why-head{margin-bottom:36px}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media (max-width:1000px){.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:540px){.why-grid{grid-template-columns:1fr}}
+.wy{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:transform .2s,box-shadow .2s}
+.wy:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(16,36,27,.08)}
+.wy b{font-family:var(--f-mono);font-size:.74rem;color:var(--copper);font-weight:600}
+.wy h4{margin:0;font-size:1rem;line-height:1.35}
+.wy p{margin:0;color:var(--muted);font-size:.9rem}
+.cmp{margin-top:28px}
+.cmp td:first-child{font-family:var(--f-body);color:var(--ink);font-weight:600;white-space:normal}
+.cmp td.no{color:#b0453a;font-family:var(--f-body)}.cmp td.yes{color:var(--ok);font-family:var(--f-body);font-weight:700}
+.assist{margin-top:72px;display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(26px,4vw,48px)}
+@media (max-width:960px){.assist{grid-template-columns:1fr;gap:32px}}
+.as-left,.as-right{min-width:0}
+.as-price{display:flex;flex-wrap:wrap;gap:14px;margin:26px 0}
+.as-price div{flex:1 1 150px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg);display:grid;gap:4px}
+.as-price small{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;color:var(--muted)}
+.as-price strong{font-family:var(--f-display);font-size:1.3rem}
+.as-right{display:grid;gap:18px}
+.as-item{display:grid;grid-template-columns:36px 1fr;gap:14px}
+.as-item i{font-style:normal;width:36px;height:36px;border-radius:10px;background:var(--mask);color:#7fe0a9;display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;font-size:.85rem}
+.as-item h4{margin:4px 0 4px;font-size:.98rem}
+.as-item p{margin:0;color:var(--muted);font-size:.9rem}
+.as-safe{margin:6px 0 0;font-size:.86rem;background:#eaf6ef;border:1px solid #c7e6d3;color:#1d5a3a;padding:14px 16px;border-radius:10px}
+
+/* youtube builds */
+.yt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px}
+.yt{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface);transition:transform .2s,box-shadow .2s;min-width:0}
+.yt:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(16,36,27,.1)}
+.yt-thumb{aspect-ratio:16/9;max-width:100%;position:relative;display:grid;place-items:center;background:radial-gradient(circle at 70% 30%,#15513a,#05140d);overflow:hidden}
+.yt-thumb::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(95,242,166,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(95,242,166,.08) 1px,transparent 1px);background-size:22px 22px}
+.yt-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.yt-thumb b{position:relative;font-family:var(--f-display);color:#fff;font-size:1.05rem;padding:0 18px;text-align:center;line-height:1.25}
+.yt-play{position:absolute;right:14px;bottom:14px;width:44px;height:30px;border-radius:8px;background:#ff0033;display:grid;place-items:center}
+.yt-play::after{content:"";border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.yt-dur{position:absolute;left:12px;bottom:12px;font-family:var(--f-mono);font-size:.72rem;color:#fff;background:rgba(0,0,0,.6);padding:2px 7px;border-radius:4px}
+.yt-body{padding:18px 20px 20px}
+.yt-body h3{font-size:.98rem;font-family:var(--f-body);font-weight:700}
+.yt-body small{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.channel{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:36px}
+.notice{font-family:var(--f-body);display:inline-flex;align-items:center;gap:10px;background:#fff4e8;border:1px solid #f0c9a3;color:#7a3e10;font-weight:600;font-size:.9rem;padding:10px 16px;border-radius:99px}
+.notice::before{content:"☎";font-size:1rem}
+.hero .notice{background:rgba(240,164,100,.12);border-color:rgba(240,164,100,.4);color:#f6c79e;margin-top:22px}
+/* BOM table */
+.split{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:center}
+@media (max-width:900px){.split{grid-template-columns:1fr;gap:48px}}
+.table-box{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{text-align:left;padding:16px 20px;border-bottom:1px solid var(--line);font-size:.95rem;vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--surface-2)}
+td:first-child{font-family:var(--f-mono);color:var(--copper);white-space:nowrap;font-weight:600}
+tr:last-child td{border-bottom:none}
+.yes{color:var(--ok);font-family:var(--f-mono);font-weight:600}
+.no{color:#b5c2bb;font-family:var(--f-mono)}
+
+/* report preview */
+.paper{background:#fff;border:1px solid var(--line);border-radius:6px;padding:40px 38px 32px;box-shadow:0 30px 60px rgba(16,36,27,.12),14px 14px 0 -2px var(--surface-2),14px 14px 0 -1px var(--line);transform:rotate(-1.2deg);max-width:500px}
+.paper h3{font-family:var(--f-display);font-size:1rem;text-align:center;margin-bottom:6px}
+.paper .sub{text-align:center;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);margin-bottom:24px;letter-spacing:.08em}
+.paper ol{margin:0;padding:0;list-style:none;display:grid;gap:9px;font-size:.9rem}
+.paper li{display:flex;gap:10px}
+.paper li b{font-family:var(--f-mono);font-weight:600;color:var(--copper);min-width:26px}
+.paper li span{flex:1;border-bottom:1px dotted #c6d0ca}
+.paper li em{font-style:normal;font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.viva{display:grid;gap:14px;margin-top:32px}
+.viva div{border:1px solid var(--line);border-radius:var(--r);padding:18px 22px;background:var(--surface)}
+.viva small{font-family:var(--f-mono);color:var(--copper);font-size:.72rem;letter-spacing:.08em;font-weight:600}
+.viva p{margin:6px 0 0;font-size:.96rem;font-weight:600}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative}
+.steps::before{content:"";position:absolute;top:25px;left:4%;right:8%;height:2px;background:repeating-linear-gradient(90deg,var(--copper) 0 10px,transparent 10px 18px);opacity:.55}
+.step{position:relative;min-width:0}
+.pad{width:52px;height:52px;border-radius:50%;background:var(--surface);border:3px solid var(--copper);display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;color:var(--copper);position:relative;z-index:1;font-size:1.05rem}
+.step h3{font-size:1.05rem;margin:24px 0 10px}
+.step p{margin:0;color:var(--muted);font-size:.95rem}
+@media (max-width:900px){.steps{grid-template-columns:1fr;gap:36px}.steps::before{top:0;bottom:0;left:25px;right:auto;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--copper) 0 10px,transparent 10px 18px)}.step{display:grid;grid-template-columns:52px 1fr;gap:0 22px}.step h3{margin:12px 0 6px}.step p{grid-column:2}}
+
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:900px){.plans{grid-template-columns:1fr}}
+.plan{border:1px solid var(--line);border-radius:14px;padding:36px 32px;background:var(--surface);display:flex;flex-direction:column;gap:18px}
+.plan.feat{background:var(--mask);border-color:var(--mask);color:#fff;box-shadow:0 30px 60px rgba(15,58,41,.25)}
+.plan.feat h3,.plan.feat .amt{color:#fff}
+.plan.feat ul{color:#c9dbd1}
+.plan.feat .amt small{color:#a9c4b6}
+.plan h3{font-size:1.08rem}
+.plan .amt{font-family:var(--f-display);font-size:2.2rem;font-weight:800}
+.plan .amt small{font-family:var(--f-body);font-size:.88rem;color:var(--muted);font-weight:500}
+.plan ul{margin:0 0 8px;padding:0;list-style:none;display:grid;gap:11px;color:var(--muted);font-size:.96rem}
+.plan li{display:flex;gap:12px}
+.plan li::before{content:"✓";font-family:var(--f-mono);color:var(--ok);font-weight:600}
+.plan.feat li::before{color:#7fe0a9}
+.plan .btn{margin-top:auto;justify-content:center}
+.plan.feat .btn{background:#fff;color:var(--mask)}
+.plan.feat .btn:hover{background:var(--copper-soft)}
+.badge{align-self:flex-start;font-family:var(--f-mono);font-size:.72rem;background:var(--copper);color:#fff;padding:4px 11px;border-radius:99px;font-weight:600;letter-spacing:.06em}
+.group-note{margin-top:32px;border:1.5px dashed #e3b994;background:var(--copper-soft);border-radius:var(--r);padding:24px 28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;align-items:center}
+.group-note strong{font-family:var(--f-display);font-size:1.02rem}
+.group-note span{color:var(--muted);font-size:.95rem;max-width:62ch}
+
+/* maker */
+.maker{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:clamp(30px,5vw,56px);background:var(--surface)}
+@media (max-width:680px){.maker{grid-template-columns:1fr;gap:28px}}
+.avatar{width:128px;height:128px;border-radius:50%;background:var(--mask);display:grid;place-items:center;font-family:var(--f-display);font-size:2.8rem;color:#fff;box-shadow:0 0 0 8px var(--surface-2)}
+.maker h3{font-size:1.45rem;margin:14px 0 14px}
+.maker p{margin:0;color:var(--muted);max-width:62ch}
+.skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.skills span{font-family:var(--f-mono);font-size:.76rem;border:1px solid var(--line);padding:5px 12px;border-radius:99px;background:var(--bg)}
+
+/* trust */
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+@media (max-width:900px){.trust{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.trust{grid-template-columns:1fr}}
+.trust div{padding:28px 26px;border-top:3px solid var(--mask);background:var(--surface);border-radius:0 0 var(--r) var(--r)}
+.trust h3{font-size:1rem;margin-bottom:10px}
+.trust p{margin:0;color:var(--muted);font-size:.94rem}
+
+/* policy */
+.policy{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:900px){.policy{grid-template-columns:1fr}}
+.policy div{border:1px solid var(--line);border-radius:var(--r);padding:32px 30px;background:var(--surface)}
+.policy h3{font-size:1.02rem;margin-bottom:16px;display:flex;gap:12px;align-items:center}
+.policy h3 span{font-family:var(--f-mono);font-size:.7rem;color:var(--copper);border:1px solid #e3b994;padding:2px 7px;border-radius:4px}
+.policy ul{margin:0;padding-left:18px;color:var(--muted);font-size:.95rem;display:grid;gap:9px}
+
+/* custom form */
+.custom{background:var(--surface);border-block:1px solid var(--line)}
+.custom .split{align-items:start}
+form{display:grid;gap:20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+label{display:grid;gap:8px;font-size:.88rem;color:var(--ink);font-weight:600}
+input,select,textarea{font:inherit;font-weight:500;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--mask);background:#fff}
+textarea{min-height:120px;resize:vertical}
+.form-note{font-size:.84rem;color:var(--muted);margin:0}
+
+/* faq */
+.faq{max-width:820px;display:grid;gap:14px}
+details{border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+summary{cursor:pointer;padding:22px 26px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--f-mono);color:var(--copper);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"−"}
+details p{margin:0;padding:0 26px 24px;color:var(--muted)}
+
+/* final cta */
+.final{background:var(--mask);color:#fff;border-radius:20px;padding:clamp(40px,7vw,80px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:30px;position:relative;overflow:hidden}
+.final h2{color:#fff;margin:0;max-width:20ch}
+.final p{color:#b9d0c3;margin:14px 0 0}
+.final .btn{background:#fff;color:var(--mask)}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:48px;background:var(--surface)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px;align-items:center}
+.contact{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-family:var(--f-mono);font-size:.92rem}
+.copy{font:inherit;font-size:.8rem;background:var(--bg);color:var(--mask);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.small{font-size:.85rem;color:var(--muted)}
+
+/* floating wa */
+.fab{position:fixed;right:calc(22px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:40;width:60px;height:60px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 12px 28px rgba(0,0,0,.2);transition:transform .2s}
+.fab:hover{transform:scale(1.07)}
+.fab svg{width:30px;height:30px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="brand-chip" aria-hidden="true"></span><span>Volt Bench</span></a>
+    <div class="nav-links">
+      <a href="#projects">Projects</a><a href="#pcb">PCB Design</a><a href="#builds">Videos</a><a href="#package">What you get</a><a href="#report">Report</a><a href="#pricing">Pricing</a><a href="#policy">Policies</a><a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-main wa-link" href="#" target="_blank" rel="noopener">WhatsApp us</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-text">
+      <div class="live">ONLINE · ACCEPTING ORDERS</div>
+      <div class="eyebrow">For B.Tech · Diploma · BCA/MCA students</div>
+      <h1>Submission coming up? Your project is <em>ready.</em></h1>
+      <p class="hero-sub">Final year and mini projects with working hardware, code, report, PPT and viva prep, plus custom PCB design. Watch the demo video first, then pay the rest.</p>
+      <div class="cta-row">
+        <a class="btn btn-main wa-link" href="#" target="_blank" rel="noopener">
+          <svg class="wa-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.4-.2z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="#projects">Browse projects</a>
+      </div>
+      <div class="promise"><span>Only 50% advance</span><span>Demo video before delivery</span><span>Free viva support</span></div>
+      <div class="notice">WhatsApp messages only. No calls without a scheduled time.</div>
+    </div>
+
+    <div class="showcase" id="showcase" aria-hidden="true">
+      <div class="ring r1"></div><div class="ring r2"></div>
+      <div class="floaty">
+        <div class="board3d">
+          <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pcbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16402e"/><stop offset="1" stop-color="#0c2a1e"/></linearGradient>
+              <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6f5"/><stop offset=".5" stop-color="#cfd6d2"/><stop offset="1" stop-color="#e9edeb"/></linearGradient>
+              <radialGradient id="glow"><stop offset="0" stop-color="#ffd59e"/><stop offset="1" stop-color="#ffd59e" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect x="8" y="14" width="384" height="216" rx="16" fill="#071a12"/>
+            <rect x="4" y="6" width="384" height="216" rx="16" fill="url(#pcbg)"/>
+            <g fill="#d9a441">
+              <g id="pinrow"><rect x="40" y="16" width="9" height="9" rx="2"/><rect x="56" y="16" width="9" height="9" rx="2"/><rect x="72" y="16" width="9" height="9" rx="2"/><rect x="88" y="16" width="9" height="9" rx="2"/><rect x="104" y="16" width="9" height="9" rx="2"/><rect x="120" y="16" width="9" height="9" rx="2"/><rect x="136" y="16" width="9" height="9" rx="2"/><rect x="152" y="16" width="9" height="9" rx="2"/><rect x="168" y="16" width="9" height="9" rx="2"/><rect x="184" y="16" width="9" height="9" rx="2"/><rect x="200" y="16" width="9" height="9" rx="2"/><rect x="216" y="16" width="9" height="9" rx="2"/><rect x="232" y="16" width="9" height="9" rx="2"/><rect x="248" y="16" width="9" height="9" rx="2"/><rect x="264" y="16" width="9" height="9" rx="2"/></g>
+              <use href="#pinrow" y="186"/>
+            </g>
+            <g stroke="#c98a4b" stroke-width="2.2" fill="none" opacity=".75" stroke-linecap="round">
+              <path id="t1" d="M44 30 V70 H120 V110 H232"/>
+              <path id="t2" d="M140 196 V160 H190 V140 H232"/>
+              <path id="t3" d="M60 196 V150 H110 V130"/>
+              <path id="t4" d="M252 30 V48 H226 V80"/>
+              <path d="M76 30 V58 H150"/>
+              <path d="M220 196 V176 H180"/>
+            </g>
+            <rect x="232" y="44" width="136" height="150" rx="6" fill="url(#shield)" stroke="#9aa7a0"/>
+            <path d="M246 56 h14 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h12" stroke="#9aa7a0" stroke-width="2" fill="none"/>
+            <text x="300" y="132" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="#5a6d63">ESP32-WROOM</text>
+            <text x="300" y="150" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#7c8b83">WIFI · BLUETOOTH</text>
+            <rect x="-4" y="98" width="26" height="40" rx="5" fill="#b8c0bc"/><rect x="2" y="108" width="10" height="20" rx="2" fill="#5a6d63"/>
+            <rect x="120" y="96" width="44" height="44" rx="4" fill="#111"/><text x="142" y="122" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#777">CP2102</text>
+            <rect x="40" y="96" width="20" height="14" rx="3" fill="#2b2b2b"/><circle cx="50" cy="103" r="4" fill="#555"/>
+            <rect x="40" y="126" width="20" height="14" rx="3" fill="#2b2b2b"/><circle cx="50" cy="133" r="4" fill="#555"/>
+            <circle cx="88" cy="166" r="14" fill="url(#glow)" class="led-glow"/><circle cx="88" cy="166" r="4" fill="#ff5b4f"/>
+            <circle cx="108" cy="166" r="14" fill="url(#glow)" class="led-glow b"/><circle cx="108" cy="166" r="4" fill="#3ba7ff" class="led-blue"/>
+            <text x="190" y="214" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9fc7b2" letter-spacing="1">VOLT BENCH · DEVKIT V1</text>
+            <g class="pulses">
+              <circle r="9" fill="url(#glow)"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#t1"/></animateMotion></circle>
+              <circle r="9" fill="url(#glow)"><animateMotion dur="2.1s" begin=".7s" repeatCount="indefinite"><mpath href="#t2"/></animateMotion></circle>
+              <circle r="9" fill="url(#glow)"><animateMotion dur="1.8s" begin="1.1s" repeatCount="indefinite"><mpath href="#t3"/></animateMotion></circle>
+              <circle r="9" fill="url(#glow)"><animateMotion dur="1.5s" begin=".3s" repeatCount="indefinite"><mpath href="#t4"/></animateMotion></circle>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="fcard f1"><small>TEMPERATURE</small><strong id="hTemp">27.4°C</strong>
+        <svg viewBox="0 0 120 30" class="spark"><path id="hSpark" d="" fill="none" stroke="#1f9d5c" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="fcard f2"><small>WI-FI</small><strong>Connected</strong><span class="bars"><i></i><i></i><i></i><i></i></span><em id="hRssi">-48 dBm</em></div>
+      <div class="fcard f3"><small>RELAY 2 · LIGHT</small><div class="tog-row"><strong id="hRelay">ON</strong><span class="tog on" id="hTog"></span></div></div>
+      <div class="fcard f4"><span class="play"></span><div><small>DEMO VIDEO</small><strong>Sent before delivery</strong></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-label="Branches we make projects for">
+  <div class="ticker-track">
+    <span>ECE</span><span>EEE</span><span>CSE</span><span>IT</span><span>Mechanical</span><span>Instrumentation</span><span>Diploma (Polytechnic)</span><span>BCA / MCA</span><span>IoT</span><span>Robotics</span><span>Embedded Systems</span><span>PCB Design</span>
+    <span>ECE</span><span>EEE</span><span>CSE</span><span>IT</span><span>Mechanical</span><span>Instrumentation</span><span>Diploma (Polytechnic)</span><span>BCA / MCA</span><span>IoT</span><span>Robotics</span><span>Embedded Systems</span>
+  </div>
+</div>
+
+<main>
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Project catalog</div>
+        <h2>Ready projects that actually work</h2>
+      </div>
+      <div class="filters" role="group" aria-label="Filter by category" id="filters"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="pcb" class="pcb-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">New · PCB design service</div>
+        <h2>Custom PCB design for your project</h2>
+        <p class="lead">Turn your breadboard circuit into a clean, professional PCB. I design the schematic, the board layout and the 3D model, then hand over ready-to-order Gerber files.</p>
+      </div>
+      <a class="btn btn-main wa-link" data-msg="I need a custom PCB design for my project." href="#" target="_blank" rel="noopener">Get a PCB quote</a>
+    </div>
+
+    <div class="pcb-show">
+      <div class="win">
+        <div class="win-bar">
+          <span class="wd"></span><span class="wd"></span><span class="wd"></span>
+          <div class="win-tabs" role="tablist" aria-label="PCB videos">
+            <button class="wtab" role="tab" aria-selected="true" data-v="0" type="button">3D model</button>
+            <button class="wtab" role="tab" aria-selected="false" data-v="1" type="button">Schematic &amp; layout</button>
+          </div>
+          <span class="rec">● REAL DESIGN</span>
+        </div>
+        <div class="win-body">
+          <video class="pcb-vid on" src="pcb/pcb_3d.mp4" poster="pcb/pcb_b_1.jpg" muted loop playsinline preload="metadata" aria-label="3D view of a PCB I designed, rotating"></video>
+          <video class="pcb-vid" src="pcb/pcb_design.mp4" poster="pcb/pcb_b_13.jpg" muted loop playsinline preload="none" aria-label="Schematic and PCB layout of the same board"></video>
+          <div class="vid-ctrl"><button type="button" id="pcbPlay" aria-label="Pause video">❚❚</button><span id="pcbCap">3D model · rotating view</span></div>
+        </div>
+      </div>
+      <aside class="pcb-spec">
+        <div class="ps-head"><small>SAMPLE BOARD</small><strong>Multi-channel controller PCB</strong></div>
+        <ul>
+          <li><span>Layers</span><b>2-layer</b></li>
+          <li><span>Software</span><b>EasyEDA</b></li>
+          <li><span>Connectors</span><b>Screw terminals + IDC header</b></li>
+          <li><span>Power section</span><b>On-board, filtered</b></li>
+          <li><span>Output</span><b>Gerber · BOM · CPL</b></li>
+        </ul>
+        <p class="ps-note">This is one of my own designs, shown as a sample of the quality you get.</p>
+      </aside>
+    </div>
+
+    <div class="gal" id="pcbGal">
+      <button class="gi" type="button" data-src="pcb/pcb_b_1.jpg"><img src="pcb/pcb_b_1.jpg" alt="3D render of PCB, top view" loading="lazy" width="960" height="528"><span>3D render</span></button>
+      <button class="gi" type="button" data-src="pcb/pcb_a_8.jpg"><img src="pcb/pcb_a_8.jpg" alt="3D render of PCB, angled view" loading="lazy" width="960" height="528"><span>Angled view</span></button>
+      <button class="gi" type="button" data-src="pcb/pcb_a_14.jpg"><img src="pcb/pcb_a_14.jpg" alt="Close-up of PCB components in 3D" loading="lazy" width="960" height="528"><span>Component close-up</span></button>
+      <button class="gi" type="button" data-src="pcb/pcb_a_26.jpg"><img src="pcb/pcb_a_26.jpg" alt="Side view of PCB in 3D" loading="lazy" width="960" height="528"><span>Side profile</span></button>
+      <button class="gi" type="button" data-src="pcb/pcb_b_13.jpg"><img src="pcb/pcb_b_13.jpg" alt="Circuit schematic" loading="lazy" width="960" height="528"><span>Schematic</span></button>
+      <button class="gi" type="button" data-src="pcb/pcb_b_7.jpg"><img src="pcb/pcb_b_7.jpg" alt="PCB layout with routed tracks" loading="lazy" width="960" height="528"><span>Board layout</span></button>
+      <button class="gi" type="button" data-src="pcb/pcb_b_25.jpg"><img src="pcb/pcb_b_25.jpg" alt="Close-up of PCB routing" loading="lazy" width="960" height="528"><span>Routing detail</span></button>
+    </div>
+
+    <div class="why">
+      <div class="why-head">
+        <div class="eyebrow">Why a custom PCB</div>
+        <h3 class="h3big">Why make a custom PCB for your project?</h3>
+        <p class="lead">A breadboard is great for testing. For submission, demo day and viva, a PCB makes your project look finished and work every time.</p>
+      </div>
+      <div class="why-grid">
+        <div class="wy"><b>01</b><h4>Looks professional in your viva</h4><p>Examiners see a real product, not a tangle of jumper wires. A clean board with your project name on it makes a strong first impression.</p></div>
+        <div class="wy"><b>02</b><h4>No loose wires on demo day</h4><p>Breadboard contacts loosen with travel and handling. Soldered tracks don't, so your project works when it matters most.</p></div>
+        <div class="wy"><b>03</b><h4>Smaller and neater</h4><p>Everything sits on one compact board that fits inside a box or enclosure. It's easy to carry to college and set up in minutes.</p></div>
+        <div class="wy"><b>04</b><h4>Better sensor readings</h4><p>Short tracks, a proper ground plane and filter capacitors cut noise, so sensors, audio and Wi-Fi modules give steadier results.</p></div>
+        <div class="wy"><b>05</b><h4>Safe for relays and motors</h4><p>Tracks are sized for the current they carry, and power is kept away from signals. Thin jumper wires can heat up or drop voltage.</p></div>
+        <div class="wy"><b>06</b><h4>Easy to debug and explain</h4><p>Every part is labelled on the board. You can point to each block during viva and trace any fault quickly.</p></div>
+        <div class="wy"><b>07</b><h4>One copy for every member</h4><p>Manufacturers usually make at least 5 boards per order. Each group member can keep an identical working copy.</p></div>
+        <div class="wy"><b>08</b><h4>A real skill on your resume</h4><p>A project with a custom PCB stands out in placements and internships for core electronics and embedded roles.</p></div>
+      </div>
+      <div class="table-box cmp">
+        <table>
+          <thead><tr><th>For your project</th><th>Breadboard + jumpers</th><th>Custom PCB</th></tr></thead>
+          <tbody>
+            <tr><td>Look in viva / exhibition</td><td class="no">Messy, unfinished</td><td class="yes">Clean, product-like</td></tr>
+            <tr><td>Reliability while carrying</td><td class="no">Wires come loose</td><td class="yes">Soldered, stable</td></tr>
+            <tr><td>Size</td><td class="no">Large, spread out</td><td class="yes">Compact, fits a case</td></tr>
+            <tr><td>Signal noise</td><td class="no">High</td><td class="yes">Low, with ground plane</td></tr>
+            <tr><td>Relays, motors, high current</td><td class="no">Risky</td><td class="yes">Designed for it</td></tr>
+            <tr><td>Copies for the group</td><td class="no">Rebuild by hand</td><td class="yes">5+ identical boards</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcb-grid">
+      <div class="pcb-card">
+        <h3>What you get</h3>
+        <ul class="deliv">
+          <li><b>SCH</b><span>Schematic (PDF + source)</span></li>
+          <li><b>PCB</b><span>Board layout, 1 or 2 layers</span></li>
+          <li><b>3D</b><span>3D preview before you order</span></li>
+          <li><b>GBR</b><span>Gerber files, ready to upload</span></li>
+          <li><b>BOM</b><span>Parts list + pick &amp; place file</span></li>
+          <li><b>REV</b><span>2 free revisions</span></li>
+        </ul>
+      </div>
+      <div class="pcb-card">
+        <h3>How it works</h3>
+        <ol class="pflow">
+          <li><b>Share your circuit</b><span>Breadboard photo, hand sketch or idea, plus board size limits.</span></li>
+          <li><b>Schematic</b><span>I draw a clean schematic and confirm it with you.</span></li>
+          <li><b>Layout + 3D review</b><span>Routed board and 3D model for your approval.</span></li>
+          <li><b>Gerber handover</b><span>You get all files and a short guide to place the order.</span></li>
+        </ol>
+      </div>
+      <div class="pcb-card pcb-price">
+        <h3>PCB design pricing</h3>
+        <div class="pp"><span>Simple board</span><small>Up to 30 parts, 1–2 layers</small><strong>₹799+</strong></div>
+        <div class="pp"><span>Standard board</span><small>Up to 80 parts, 2 layers</small><strong>₹1,499+</strong></div>
+        <div class="pp"><span>Complex board</span><small>Dense, mixed power + logic</small><strong>Quote</strong></div>
+        <a class="btn btn-main wa-link" data-msg="I need a custom PCB design. Here are my circuit details:" href="#" target="_blank" rel="noopener">Send circuit details</a>
+      </div>
+    </div>
+
+    <div class="assist">
+      <div class="as-left">
+        <div class="eyebrow">Ordering assistance</div>
+        <h3 class="h3big">Never ordered a PCB before? I'll guide you through it.</h3>
+        <p class="lead">Ordering a PCB online has a lot of options. I help you pick the right ones, so your boards come out right the first time.</p>
+        <div class="as-price">
+          <div><small>WITH ANY PCB DESIGN</small><strong>Free</strong></div>
+          <div><small>FOR YOUR OWN GERBER FILES</small><strong>₹199</strong></div>
+        </div>
+        <a class="btn btn-main wa-link" data-msg="I need help ordering my PCB." href="#" target="_blank" rel="noopener">Get ordering help</a>
+      </div>
+      <div class="as-right">
+        <div class="as-item"><i>1</i><div><h4>Pick the right manufacturer</h4><p>Online PCB fab or a local shop, based on your budget and deadline.</p></div></div>
+        <div class="as-item"><i>2</i><div><h4>Fill the order settings correctly</h4><p>Layers, 1.6 mm thickness, board colour, HASL finish, 1 oz copper and quantity. No guesswork.</p></div></div>
+        <div class="as-item"><i>3</i><div><h4>Upload and check the Gerber</h4><p>We check the manufacturer's preview together and fix any warnings before you pay.</p></div></div>
+        <div class="as-item"><i>4</i><div><h4>Cost estimate up front</h4><p>Board cost, shipping and delivery time compared before you place the order.</p></div></div>
+        <div class="as-item"><i>5</i><div><h4>Assembly option, if you want it</h4><p>Matching the BOM and pick &amp; place files if you choose factory-soldered parts.</p></div></div>
+        <div class="as-item"><i>6</i><div><h4>First power-up checklist</h4><p>When the boards arrive, a simple checklist to solder and test them safely.</p></div></div>
+        <p class="as-safe">You pay the manufacturer directly from your own account. I never ask for your card, UPI PIN or login details. Guidance is on WhatsApp or a scheduled screen-share call.</p>
+      </div>
+    </div>
+
+    <div class="pcb-note">
+      <strong>Design only. You place the manufacturing order.</strong>
+      <span>I deliver the design files. You order and pay for the PCB directly with a manufacturer of your choice (online PCB fab or a local shop). PCB manufacturing, components and shipping are not included in the design price. Ordering guidance is free with every design.</span>
+    </div>
+  </div>
+</section>
+
+<div class="lb" id="lb" hidden><button type="button" class="lb-x" aria-label="Close">✕</button><img id="lbImg" alt=""></div>
+
+<section id="builds" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Real builds</div>
+      <h2>Watch my projects working on YouTube</h2>
+      <p class="lead">These are projects I built myself and filmed. See the quality before you order.</p>
+    </div>
+    <div class="yt-grid">
+      <a class="yt" href="https://www.youtube.com/watch?v=8WcW7Pxql74" target="_blank" rel="noopener"><div class="yt-thumb"><img src="img/U5.jpg" alt="" loading="lazy" width="480" height="270"><span class="yt-dur">5:51</span><span class="yt-play"></span></div><div class="yt-body"><h3>Audio-reactive LED light show</h3><small>THE TOOLKIT · YouTube</small></div></a>
+      <a class="yt" href="https://www.youtube.com/watch?v=-rcZZ0FR1Ws" target="_blank" rel="noopener"><div class="yt-thumb"><img src="img/U10.jpg" alt="" loading="lazy" width="480" height="270"><span class="yt-dur">6:12</span><span class="yt-play"></span></div><div class="yt-body"><h3>Phone-controlled LED box</h3><small>THE TOOLKIT · YouTube</small></div></a>
+      <a class="yt" href="https://www.youtube.com/watch?v=jL0KIeUCA7c" target="_blank" rel="noopener"><div class="yt-thumb"><img src="img/U11.jpg" alt="" loading="lazy" width="480" height="270"><span class="yt-dur">6:19</span><span class="yt-play"></span></div><div class="yt-body"><h3>Arduino Nano LED cube</h3><small>THE TOOLKIT · YouTube</small></div></a>
+      <a class="yt" href="https://www.youtube.com/watch?v=LlFLHpDcVEI" target="_blank" rel="noopener"><div class="yt-thumb"><img src="img/U12.jpg" alt="" loading="lazy" width="480" height="270"><span class="yt-dur">4:00</span><span class="yt-play"></span></div><div class="yt-body"><h3>Touch-free automatic lid</h3><small>THE TOOLKIT · YouTube</small></div></a>
+      <a class="yt" href="https://www.youtube.com/watch?v=4VwASOEX2Rk" target="_blank" rel="noopener"><div class="yt-thumb"><img src="img/U8.jpg" alt="" loading="lazy" width="480" height="270"><span class="yt-dur">8:38</span><span class="yt-play"></span></div><div class="yt-body"><h3>Arduino robot car</h3><small>THE TOOLKIT · YouTube</small></div></a>
+    </div>
+    <div class="channel">
+      <span class="small">More builds on my channel, THE TOOLKIT.</span>
+      <a class="btn btn-ghost" href="https://www.youtube.com/@thetoolkit4288" target="_blank" rel="noopener">Visit YouTube channel →</a>
+    </div>
+  </div>
+</section>
+
+<section id="package" style="padding-top:0">
+  <div class="wrap split">
+    <div>
+      <div class="eyebrow">Bill of materials</div>
+      <h2>Everything in the package</h2>
+      <p class="lead">College needs more than hardware. You also need a report, a presentation and answers for the viva. Pick only what you need.</p>
+    </div>
+    <div class="table-box">
+      <table>
+        <thead><tr><th>Ref</th><th>Item</th><th>Code Kit</th><th>Full Kit</th></tr></thead>
+        <tbody>
+          <tr><td>J1</td><td>Source code with comments</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>J2</td><td>Circuit diagram + pin connections</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>J3</td><td>Step-by-step setup video</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>U1</td><td>Assembled and tested hardware</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>D1</td><td>Project report (your college format)</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>D2</td><td>PPT presentation</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>S1</td><td>Viva questions + call support</td><td class="no">—</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="report" style="padding-top:0">
+  <div class="wrap split">
+    <div class="paper" aria-label="Sample report table of contents">
+      <h3>SMART HOME AUTOMATION USING ESP32</h3>
+      <div class="sub">PROJECT REPORT · TABLE OF CONTENTS</div>
+      <ol>
+        <li><b>1</b><span>Abstract</span><em>i</em></li>
+        <li><b>2</b><span>Introduction &amp; Problem Statement</span><em>1</em></li>
+        <li><b>3</b><span>Literature Survey</span><em>4</em></li>
+        <li><b>4</b><span>Block Diagram &amp; Methodology</span><em>9</em></li>
+        <li><b>5</b><span>Components &amp; Specifications</span><em>14</em></li>
+        <li><b>6</b><span>Circuit Diagram &amp; Working</span><em>22</em></li>
+        <li><b>7</b><span>Software &amp; Code Explanation</span><em>29</em></li>
+        <li><b>8</b><span>Results &amp; Photos</span><em>38</em></li>
+        <li><b>9</b><span>Applications &amp; Future Scope</span><em>44</em></li>
+        <li><b>10</b><span>References</span><em>48</em></li>
+      </ol>
+    </div>
+    <div>
+      <div class="eyebrow">Report + Viva</div>
+      <h2>A report in your college format, and full viva prep</h2>
+      <p class="lead">The report follows your college's format: font, margins and certificate page. You also get the common viva questions with simple answers.</p>
+      <div class="viva">
+        <div><small>VIVA Q · 01</small><p>Why did you use an ESP32 instead of an Arduino Uno?</p></div>
+        <div><small>VIVA Q · 02</small><p>What does the relay module do, and why does it have an optocoupler?</p></div>
+        <div><small>VIVA Q · 03</small><p>What is the future scope of this project?</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">How it works</div>
+      <h2>From order to submission in 4 steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="pad">1</div><h3>Message us</h3><p>Pick a project or share your own idea. Tell us your deadline and college format.</p></div>
+      <div class="step"><div class="pad">2</div><h3>Pay 50% advance</h3><p>We fix the price and delivery date. The advance covers the components.</p></div>
+      <div class="step"><div class="pad">3</div><h3>Watch the demo</h3><p>Once it's built, you get a video of your project working.</p></div>
+      <div class="step"><div class="pad">4</div><h3>Delivery + support</h3><p>Pay the rest and get your project. We help with doubts until your viva.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Pricing</div>
+      <h2>A plan for every budget</h2>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>Code Kit</h3>
+        <div class="amt">₹499 <small>onwards</small></div>
+        <ul><li>Source code + circuit diagram</li><li>Setup video</li><li>Build the hardware yourself</li></ul>
+        <a class="btn btn-ghost wa-link" data-msg="I'd like the Code Kit." href="#" target="_blank" rel="noopener">Get Code Kit</a>
+      </div>
+      <div class="plan feat">
+        <span class="badge">MOST POPULAR</span>
+        <h3>Full Project Kit</h3>
+        <div class="amt">₹2,499 <small>onwards</small></div>
+        <ul><li>Tested, working hardware</li><li>Code, diagram, report and PPT</li><li>Viva questions + support</li></ul>
+        <a class="btn wa-link" data-msg="I'd like the Full Project Kit." href="#" target="_blank" rel="noopener">Get Full Kit</a>
+      </div>
+      <div class="plan">
+        <h3>Custom Project</h3>
+        <div class="amt">Quote <small>based on idea</small></div>
+        <ul><li>Your own project idea</li><li>Changes asked by your guide</li><li>Same package as the Full Kit</li></ul>
+        <a class="btn btn-ghost" href="#custom">Send your idea</a>
+      </div>
+    </div>
+    <div class="group-note">
+      <strong>Group project? Split the cost.</strong>
+      <span>For groups of 3–4 students, one Full Kit price is shared by everyone. Message us on WhatsApp for a group discount.</span>
+    </div>
+  </div>
+</section>
+
+<section id="about" style="padding-top:0">
+  <div class="wrap">
+    <div class="maker">
+      <div class="avatar" aria-hidden="true">A</div>
+      <div>
+        <div class="eyebrow">Who builds it</div>
+        <h3>Hi, I'm Adi</h3>
+        <p>I work on electronics and embedded systems. I've designed and built projects like ESP32 audio-reactive LED systems and a custom boombox. I build and test every project myself and share my builds on my YouTube channel, THE TOOLKIT. If you have a doubt, you talk directly to me.</p>
+        <div class="skills"><span>ESP32</span><span>Arduino</span><span>IoT</span><span>WS2812B LEDs</span><span>Sensors</span><span>OLED displays</span><span>C/C++</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Why trust us</div>
+      <h2>See everything before you pay</h2>
+    </div>
+    <div class="trust">
+      <div><h3>Demo first, then pay</h3><p>You pay the remaining 50% only after watching your project work on video.</p></div>
+      <div><h3>Every project tested</h3><p>Each sensor and connection is checked before delivery.</p></div>
+      <div><h3>Support until viva</h3><p>Need help understanding the code or viva questions? Call or chat anytime.</p></div>
+      <div><h3>Clear pricing</h3><p>Component and build costs are shared upfront. No hidden charges.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="policy" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Policies</div>
+      <h2>Everything clear from day one</h2>
+    </div>
+    <div class="policy">
+      <div><h3><span>P1</span>Payment</h3><ul><li>Pay by UPI</li><li>50% advance to confirm the order</li><li>Remaining 50% after the demo video</li><li>Receipt for every payment on WhatsApp</li></ul></div>
+      <div><h3><span>P2</span>Delivery &amp; Support</h3><ul><li>Ready projects: 3–5 days</li><li>Custom projects: 7–12 days</li><li>Local hand delivery, courier elsewhere</li><li>Free doubt support until your viva</li><li>No calls without a scheduled time. Message first on WhatsApp</li></ul></div>
+      <div><h3><span>P3</span>Refund &amp; Privacy</h3><ul><li>Cancel before work starts: full advance refunded</li><li>After parts are bought: only parts cost is deducted</li><li>The same project is never given to another group from your college</li><li>Your details are never shared</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="custom" id="custom">
+  <div class="wrap split">
+    <div>
+      <div class="eyebrow">Custom request</div>
+      <h2>Have your own idea? Send the details</h2>
+      <p class="lead">Fill the form and tap "Send on WhatsApp". A message with your details opens in WhatsApp.</p>
+    </div>
+    <form id="reqForm" novalidate>
+      <div class="row2">
+        <label for="fName">Name<input id="fName" placeholder="Rahul Sharma" autocomplete="name"></label>
+        <label for="fCollege">College / Branch<input id="fCollege" placeholder="ABC Engg. College, ECE"></label>
+      </div>
+      <div class="row2">
+        <label for="fType">Project type
+          <select id="fType"><option>Final year project</option><option>Mini project</option><option>Diploma project</option><option>Hobby / personal</option></select>
+        </label>
+        <label for="fDate">Submission date<input id="fDate" type="date"></label>
+      </div>
+      <label for="fIdea">Project idea<textarea id="fIdea" placeholder="e.g. A smart dustbin using ESP32 that sends a phone alert when it's full"></textarea></label>
+      <a class="btn btn-main" id="sendReq" href="#" target="_blank" rel="noopener" style="justify-content:center">Send on WhatsApp</a>
+      <p class="form-note">The message opens in WhatsApp. You'll need to tap send yourself. Please don't call without scheduling a time first.</p>
+    </form>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq">
+      <details><summary>How long does a project take?</summary><p>Ready projects take 3–5 days. Custom projects take 7–12 days, depending on the idea. If you need it sooner, tell us early.</p></details>
+      <details><summary>How will I get my project?</summary><p>Hand delivery locally, courier everywhere else (courier charges extra). Code Kits are sent instantly on WhatsApp or Google Drive.</p></details>
+      <details><summary>What if the project doesn't work?</summary><p>You see a demo video before delivery. If something goes wrong after delivery, we fix it over a video call or replace the part.</p></details>
+      <details><summary>I don't know much electronics. Can I handle the viva?</summary><p>Yes. Every line of code is commented, you get a setup video, and we walk you through the full project on a call before your viva.</p></details>
+      <details><summary>Will another student have the same project?</summary><p>We never give the same project to another group from your college. We can also add an extra feature so yours stands out.</p></details>
+      <details><summary>We're a group of 3–4. How does pricing work?</summary><p>You buy one Full Kit and split the price. Groups also get an extra discount, just ask on WhatsApp.</p></details>
+      <details><summary>Can I get changes made?</summary><p>Yes. Changes your guide asks for (an extra sensor, app or display) can be added. Bigger changes are quoted separately.</p></details>
+      <details><summary>Do you manufacture the PCB too?</summary><p>No. I only design it. You get the Gerber, BOM and pick &amp; place files and order the PCB yourself from any manufacturer. I'll guide you through the upload.</p></details>
+      <details><summary>I've never ordered a PCB. Can you help?</summary><p>Yes. Ordering help is free with any PCB design I make, and ₹199 if you already have your own Gerber files. I guide you on the settings, check the preview with you and estimate the cost. You pay the manufacturer directly.</p></details>
+      <details><summary>Which software do you use for PCB design?</summary><p>EasyEDA. You also get the source file, so you or your guide can open and edit the design later.</p></details>
+      <details><summary>How do I pay?</summary><p>By UPI. 50% advance when you order, the remaining 50% after you see the demo video.</p></details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="final">
+      <div>
+        <h2>Don't wait for the last week.</h2>
+        <p>Message now and lock your project before the submission rush.</p>
+      </div>
+      <a class="btn wa-link" href="#" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top"><span class="brand-chip" aria-hidden="true"></span><span>Volt Bench</span></a>
+      <p class="small" style="margin:12px 0 0">ESP32 &amp; Arduino projects for students</p>
+    </div>
+    <div class="contact">
+      <span class="small">WhatsApp:</span><span id="numText"></span>
+      <button class="copy" id="copyBtn" type="button">Copy</button>
+      <a class="small" style="margin-left:12px" href="https://www.youtube.com/@thetoolkit4288" target="_blank" rel="noopener">YouTube: THE TOOLKIT</a>
+      <p class="credits">"Real build" images are from my YouTube channel, THE TOOLKIT. "Concept render" images show the planned hardware, wiring and app for projects I build on order.</p>
+      <div style="flex-basis:100%"><span class="notice">No calls without a scheduled time. Message on WhatsApp first.</span></div>
+    </div>
+  </div>
+</footer>
+
+<a class="fab wa-link" href="#" target="_blank" rel="noopener" aria-label="Message us on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.4-.2z"/></svg>
+</a>
+
+<script>
+/* ===== EDIT HERE ===== */
+const WA_NUMBER = "916206813681";   // your WhatsApp number (91 + 10 digits), no +
+const BRAND = "Volt Bench";
+const YT = id => "https://www.youtube.com/watch?v=" + id;
+const CHANNEL = "https://www.youtube.com/@thetoolkit4288";
+
+const PROJECTS = [
+  {id:"U1",cat:"IoT",name:"Smart Home Automation",desc:"Control 4 appliances from your phone, from anywhere. Optional voice control.",parts:["ESP32","4-ch Relay","Web App"],diff:2,code:699,kit:3499,
+   spec:{mcu:"ESP32",ins:[["Switch Panel","switch"]],outs:[["4-ch Relay","relay"],["Light & Fan","bulb"]],net:"Cloud App",app:{title:"Smart Home",rows:[["Power use","412 W"]],toggles:[["Light",1],["Fan",1],["TV",0],["Socket",0]]}}},
+  {id:"U2",cat:"IoT",name:"IoT Weather Station",desc:"Live temperature, humidity and pressure on a web dashboard with graphs.",parts:["ESP32","DHT22","BMP280"],diff:2,code:599,kit:2999,
+   spec:{mcu:"ESP32",ins:[["DHT22","sensor"],["BMP280","sensor"],["Rain Sensor","sensor"]],outs:[["OLED","oled"]],net:"Web Dashboard",app:{title:"Weather",rows:[["Temperature","27.4°C"],["Humidity","61%"],["Pressure","1008 hPa"]],spark:1}}},
+  {id:"U3",cat:"Automation",name:"RFID Attendance System",desc:"Tap a card and attendance is saved with the time to a Google Sheet.",parts:["ESP32","RC522","OLED"],diff:3,code:699,kit:3299,
+   spec:{mcu:"ESP32",ins:[["RC522 Reader","rfid"]],outs:[["OLED","oled"],["Buzzer","buzzer"]],net:"Google Sheets",app:{title:"Attendance",rows:[["Present","42 / 48"]],list:["Rahul S.  09:02","Priya K.  09:04","Aman T.  09:05","Neha R.  09:07"]}}},
+  {id:"U4",cat:"Safety",name:"Gas & Fire Alert System",desc:"Detects gas leaks or fire, sounds a buzzer and sends a phone alert.",parts:["MQ-2","Flame Sensor","Telegram Bot"],diff:2,code:599,kit:2799,
+   spec:{mcu:"ESP32",ins:[["MQ-2 Gas","sensor"],["Flame Sensor","sensor"]],outs:[["Buzzer","buzzer"],["Exhaust Fan","relay"]],net:"Telegram Alert",app:{title:"Safety",alert:"Gas leak detected!",rows:[["Gas level","412 ppm"],["Flame","None"]],toggles:[["Exhaust fan",1]]}}},
+  {id:"U5",cat:"LED",name:"Audio-Reactive LED System",desc:"LEDs that dance to the beat of music, with 10+ effects and an OLED display.",parts:["ESP32","INMP441","WS2812B"],diff:3,code:499,kit:2499,yt:"8WcW7Pxql74",photos:["U5","U5_2","U5_3"],
+   spec:{mcu:"ESP32",ins:[["INMP441 Mic","mic"],["Buttons","switch"]],outs:[["WS2812B Strip","leds"],["OLED","oled"]]}},
+  {id:"U6",cat:"Automation",name:"Smart Irrigation System",desc:"The pump turns on by itself when the soil is dry. Moisture level shows in an app.",parts:["Soil Sensor","Pump","ESP32"],diff:1,code:599,kit:2699,
+   spec:{mcu:"ESP32",ins:[["Soil Moisture","sensor"],["DHT11","sensor"]],outs:[["Relay","relay"],["Water Pump","pump"]],net:"Mobile App",app:{title:"Garden",rows:[["Soil moisture","38%"],["Pump","ON"]],spark:1,toggles:[["Auto mode",1]]}}},
+  {id:"U7",cat:"Health",name:"Patient Health Monitor",desc:"Live heart rate, SpO2 and body temperature on a dashboard, with alerts on abnormal values.",parts:["ESP32","MAX30102","DS18B20"],diff:3,code:799,kit:3699,
+   spec:{mcu:"ESP32",ins:[["MAX30102","sensor"],["DS18B20","sensor"]],outs:[["OLED","oled"],["Buzzer","buzzer"]],net:"Doctor Dashboard",app:{title:"Patient",rows:[["Heart rate","78 bpm"],["SpO2","98%"],["Body temp","36.8°C"]],spark:1}}},
+  {id:"U8",cat:"Robotics",name:"Bluetooth Robot Car",desc:"A car you drive from a phone app, with an obstacle-avoiding mode.",parts:["Arduino","L298N","HC-05","Ultrasonic"],diff:2,code:599,kit:3199,yt:"4VwASOEX2Rk",photos:["U8","U8_1","U8_2","U8_3"],
+   spec:{mcu:"Arduino Uno",ins:[["HC-05 Bluetooth","bt"],["Ultrasonic","sensor"]],outs:[["L298N Driver","driver"],["4 DC Motors","motor"]],net:"Phone Controller"}},
+  {id:"U9",cat:"IoT",name:"Smart Parking System",desc:"Shows which parking slots are free on a live web page. The gate opens automatically.",parts:["ESP32","IR Sensors","Servo"],diff:2,code:699,kit:3299,
+   spec:{mcu:"ESP32",ins:[["IR Sensors ×6","sensor"]],outs:[["Gate Servo","servo"],["LCD 16×2","lcd"]],net:"Live Web Page",app:{title:"Parking",rows:[["Free slots","2 of 6"]],slots:[1,0,1,1,0,1]}}},
+  {id:"U10",cat:"LED",name:"WiFi LED Light Box",desc:"A glowing LED box you control over WiFi from your phone. Great for room and gaming setups.",parts:["ESP8266","WS2812B","Web Control"],diff:2,code:599,kit:2799,yt:"-rcZZ0FR1Ws",photos:["U10","U10_2","U10_3"],
+   spec:{mcu:"ESP8266",ins:[["Phone (Wi-Fi)","app"]],outs:[["WS2812B LEDs","leds"]],net:"Web Control"}},
+  {id:"U11",cat:"LED",name:"4×4×4 LED Cube",desc:"64 LEDs in a 3D cube that play animated patterns. A classic project that always impresses.",parts:["Arduino Nano","64 LEDs","Transistors"],diff:2,code:499,kit:2299,yt:"jL0KIeUCA7c",photos:["U11","U11_1","U11_2","U11_3"],
+   spec:{mcu:"Arduino Nano",ins:[["5V Supply","battery"]],outs:[["Transistors","driver"],["64 LEDs","leds"]]}},
+  {id:"U12",cat:"Automation",name:"Smart Dustbin",desc:"The lid opens by itself when you bring your hand close. No touching needed.",parts:["Arduino","Ultrasonic","Servo"],diff:1,code:499,kit:1999,yt:"LlFLHpDcVEI",photos:["U12","U12_1","U12_2"],
+   spec:{mcu:"Arduino Uno",ins:[["Ultrasonic","sensor"]],outs:[["Servo (Lid)","servo"]]}},
+  {id:"U13",cat:"Security",name:"Face Recognition Door Lock",desc:"The door unlocks only for saved faces. Unknown visitors get photographed and sent to your phone.",parts:["ESP32-CAM","Relay","Solenoid Lock"],diff:3,code:899,kit:3999,
+   spec:{mcu:"ESP32-CAM",ins:[["OV2640 Camera","camera"],["Doorbell Button","switch"]],outs:[["Relay","relay"],["Solenoid Lock","lock"]],net:"Telegram Photo",app:{title:"Front Door",alert:"Unknown visitor at door",rows:[["Status","Locked"],["Last entry","18:42"]],toggles:[["Unlock door",0]]}}},
+  {id:"U14",cat:"Safety",name:"Women Safety SOS Device",desc:"Press one button to send an SMS with live GPS location to 3 saved contacts.",parts:["Arduino Nano","GPS NEO-6M","SIM800L"],diff:3,code:799,kit:3499,
+   spec:{mcu:"Arduino Nano",ins:[["SOS Button","switch"],["GPS NEO-6M","gps"]],outs:[["SIM800L GSM","gsm"],["Buzzer","buzzer"]],net:"SMS + Location",app:{title:"SOS Alert",alert:"Emergency! Help needed",rows:[["Location","22.57, 88.36"],["Sent to","3 contacts"]]}}},
+  {id:"U15",cat:"IoT",name:"IoT Smart Energy Meter",desc:"Tracks live power use and the monthly bill on your phone. Cuts power on overload.",parts:["ESP32","PZEM-004T","OLED"],diff:3,code:799,kit:3799,
+   spec:{mcu:"ESP32",ins:[["PZEM-004T","sensor"]],outs:[["OLED","oled"],["Cut-off Relay","relay"]],net:"Blynk App",app:{title:"Energy",rows:[["Live power","1.24 kW"],["Today","6.8 kWh"],["Est. bill","₹412"]],spark:1}}},
+  {id:"U16",cat:"Automation",name:"Dual-Axis Solar Tracker",desc:"The solar panel follows the sun on two axes for more power than a fixed panel.",parts:["Arduino","4 LDRs","2 Servos"],diff:2,code:599,kit:2899,
+   spec:{mcu:"Arduino Uno",ins:[["4 LDR Sensors","sensor"]],outs:[["2 Servos","servo"],["Solar Panel","solar"]]}},
+  {id:"U17",cat:"Health",name:"Smart Blind Stick",desc:"Warns a visually impaired user about obstacles and water with sound and vibration.",parts:["Arduino Nano","Ultrasonic","Buzzer"],diff:1,code:499,kit:1999,
+   spec:{mcu:"Arduino Nano",ins:[["Ultrasonic","sensor"],["Water Sensor","sensor"]],outs:[["Buzzer","buzzer"],["Vibration Motor","motor"]]}}
+];
+/* ===== project image renders (SVG) ===== */
+const C={ink:"#10241b",muted:"#5a6d63",line:"#dbe4de",mask:"#0f3a29",copper:"#c26b2b",ok:"#1f9d5c"};
+let uid=0;
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const txt=(x,y,s,o={})=>`<text x="${x}" y="${y}" font-family="${o.mono?"IBM Plex Mono,monospace":"Manrope,system-ui,sans-serif"}" font-size="${o.size||10}" font-weight="${o.w||600}" fill="${o.fill||C.ink}" text-anchor="${o.anchor||"start"}" ${o.ls?`letter-spacing="${o.ls}"`:""}>${esc(s)}</text>`;
+function bgDefs(id,a="#f4f8f5",b="#e3eee7"){return `<defs><linearGradient id="g${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>
+<pattern id="d${id}" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".9" fill="rgba(15,58,41,.12)"/></pattern>
+<filter id="s${id}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#10241b" flood-opacity=".18"/></filter>
+<marker id="m${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="${C.copper}"/></marker></defs>
+<rect width="480" height="270" fill="url(#g${id})"/><rect width="480" height="270" fill="url(#d${id})"/>`;}
+
+function mcuBoard(x,y,w,h,label,id){
+  const ard=/arduino/i.test(label), cam=/cam/i.test(label);
+  const body=ard?"#0b6e8f":"#13261d";
+  let pins="";const n=Math.floor((w-16)/7);
+  for(let i=0;i<n;i++){pins+=`<rect x="${x+8+i*7}" y="${y+4}" width="4" height="4" rx="1" fill="#d9a441"/><rect x="${x+8+i*7}" y="${y+h-8}" width="4" height="4" rx="1" fill="#d9a441"/>`;}
+  let core;
+  if(ard) core=`<rect x="${x+w*.42}" y="${y+h*.32}" width="${w*.42}" height="${h*.36}" rx="2" fill="#1b1b1b"/>${txt(x+12,y+h*.56,"ARDUINO",{size:8,fill:"#e6f6fb",w:800,ls:".5"})}`;
+  else if(cam) core=`<circle cx="${x+w*.62}" cy="${y+h/2}" r="${h*.26}" fill="#222"/><circle cx="${x+w*.62}" cy="${y+h/2}" r="${h*.15}" fill="#3b5bdb" opacity=".8"/><circle cx="${x+w*.6}" cy="${y+h*.45}" r="3" fill="#fff" opacity=".7"/>`;
+  else core=`<rect x="${x+w*.44}" y="${y+h*.2}" width="${w*.46}" height="${h*.6}" rx="3" fill="#cfd6d2" stroke="#9aa7a0"/>${txt(x+w*.67,y+h*.54,"ESP",{size:9,anchor:"middle",fill:"#5a6d63",w:800})}`;
+  return `<g filter="url(#s${id})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${body}"/>${pins}
+  <rect x="${x-5}" y="${y+h/2-7}" width="12" height="14" rx="2" fill="#b8c0bc"/>${core}
+  <circle cx="${x+18}" cy="${y+16}" r="2.4" fill="#ff5b4f"/><circle cx="${x+26}" cy="${y+16}" r="2.4" fill="#3ba7ff"/></g>
+  ${txt(x+w/2,y+h+16,label,{size:10,anchor:"middle",w:800,fill:C.mask})}`;
+}
+
+function module(type,x,y,w,h,label,id){
+  let g="";const cx=x+w/2,cy=y+h/2;
+  const board=(col)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${col}"/>`;
+  switch(type){
+    case"relay":{const n=/4/.test(label)?4:1;g=board("#1d4f9e");for(let i=0;i<n;i++)g+=`<rect x="${x+8+i*((w-16)/n)}" y="${y+10}" width="${(w-16)/n-5}" height="${h-20}" rx="2" fill="#2f7be0"/>`;break;}
+    case"oled":g=board("#1a1f2b")+`<rect x="${x+8}" y="${y+8}" width="${w-16}" height="${h-16}" rx="2" fill="#05070c"/><rect x="${x+13}" y="${y+14}" width="${(w-26)*.7}" height="3" fill="#47e6ff"/><rect x="${x+13}" y="${y+21}" width="${(w-26)*.5}" height="3" fill="#47e6ff" opacity=".7"/><rect x="${x+13}" y="${y+28}" width="${(w-26)*.85}" height="3" fill="#47e6ff" opacity=".5"/>`;break;
+    case"lcd":g=board("#1d4f9e")+`<rect x="${x+6}" y="${y+9}" width="${w-12}" height="${h-18}" rx="2" fill="#9bd14a"/>${txt(x+11,y+h/2+3,"FREE: 2",{size:8,mono:1,fill:"#2b4a12"})}`;break;
+    case"servo":g=`<rect x="${x+10}" y="${y+8}" width="${w-20}" height="${h-16}" rx="5" fill="#2459c7"/><circle cx="${x+w-26}" cy="${cy}" r="7" fill="#f2f2f2"/><rect x="${x+w-26}" y="${cy-3}" width="24" height="6" rx="3" fill="#f2f2f2"/>`;break;
+    case"driver":g=board("#c0392b");for(let i=0;i<6;i++)g+=`<rect x="${x+w*.3+i*5}" y="${y+6}" width="3" height="${h-12}" fill="#222"/>`;g+=`<rect x="${x+6}" y="${y+h-14}" width="14" height="8" fill="#2b62c9"/><rect x="${x+w-20}" y="${y+h-14}" width="14" height="8" fill="#2b62c9"/>`;break;
+    case"buzzer":g=`<circle cx="${cx}" cy="${cy}" r="${h*.4}" fill="#1b1b1b"/><circle cx="${cx}" cy="${cy}" r="${h*.08}" fill="#555"/><path d="M${cx+h*.5} ${cy-8}q8 8 0 16M${cx+h*.5+6} ${cy-13}q13 13 0 26" stroke="${C.copper}" stroke-width="2" fill="none"/>`;break;
+    case"leds":{g=`<rect x="${x}" y="${cy-9}" width="${w}" height="18" rx="9" fill="#1b1b1b"/>`;const cols=["#ff4d6d","#ffb703","#4cc9f0","#7cf29c","#b388ff","#ff4d6d","#4cc9f0"];for(let i=0;i<7;i++){const px=x+9+i*((w-18)/6);g+=`<circle cx="${px}" cy="${cy}" r="9" fill="${cols[i]}" opacity=".35"/><circle cx="${px}" cy="${cy}" r="4.5" fill="${cols[i]}"/>`;}break;}
+    case"camera":g=board("#222")+`<circle cx="${cx}" cy="${cy}" r="${h*.3}" fill="#000"/><circle cx="${cx}" cy="${cy}" r="${h*.17}" fill="#3b5bdb"/><circle cx="${cx-3}" cy="${cy-3}" r="3" fill="#fff" opacity=".7"/>`;break;
+    case"gps":g=board("#1d4f9e")+`<rect x="${x+w*.3}" y="${y+7}" width="${h-14}" height="${h-14}" rx="3" fill="#d6b77a"/><circle cx="${x+w*.3+(h-14)/2}" cy="${cy}" r="4" fill="#b08d4f"/>`;break;
+    case"gsm":g=board("#b3261e")+`<rect x="${x+8}" y="${y+9}" width="${w*.36}" height="${h-18}" rx="3" fill="#cfd6d2"/><rect x="${x+w*.55}" y="${y+12}" width="${w*.3}" height="${h-24}" fill="#222"/>`;break;
+    case"pump":g=`<rect x="${x+12}" y="${y+12}" width="${w-34}" height="${h-24}" rx="8" fill="#9aa7a0"/><rect x="${x+w-24}" y="${cy-4}" width="16" height="8" rx="3" fill="#6b7a72"/><path d="M${x+w-8} ${cy}q10 4 6 16" stroke="#3ba7ff" stroke-width="3" fill="none" stroke-linecap="round"/>`;break;
+    case"motor":g=`<rect x="${x+6}" y="${y+12}" width="${w*.55}" height="${h-24}" rx="5" fill="#f2c94c"/><rect x="${x+6+w*.55}" y="${y+16}" width="${w*.25}" height="${h-32}" rx="4" fill="#bdbdbd"/><circle cx="${x+w-10}" cy="${cy}" r="${h*.3}" fill="#222"/><circle cx="${x+w-10}" cy="${cy}" r="${h*.14}" fill="#f2c94c"/>`;break;
+    case"rfid":g=board("#1d4f9e");for(let i=0;i<3;i++)g+=`<rect x="${x+8+i*5}" y="${y+7+i*5}" width="${w-16-i*10}" height="${h-14-i*10}" rx="4" fill="none" stroke="#9ec5ff" stroke-width="1.5"/>`;g+=`<rect x="${x+w-28}" y="${y-8}" width="34" height="22" rx="4" fill="#fff" stroke="${C.line}" transform="rotate(-12 ${x+w-11} ${y+3})"/>`;break;
+    case"solar":g=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="#1e3a8a"/>`;for(let i=1;i<6;i++)g+=`<line x1="${x+i*w/6}" y1="${y}" x2="${x+i*w/6}" y2="${y+h}" stroke="#93c5fd" stroke-width=".8" opacity=".6"/>`;for(let j=1;j<3;j++)g+=`<line x1="${x}" y1="${y+j*h/3}" x2="${x+w}" y2="${y+j*h/3}" stroke="#93c5fd" stroke-width=".8" opacity=".6"/>`;break;
+    case"bt":g=board("#2459c7")+`<rect x="${x+w*.55}" y="${y+8}" width="${w*.35}" height="${h-16}" rx="2" fill="#e9eef3"/>${txt(x+12,cy+4,"BT",{size:11,w:800,fill:"#fff"})}`;break;
+    case"mic":g=board("#6d28d9")+`<circle cx="${cx}" cy="${cy}" r="${h*.24}" fill="#cfd6d2"/><circle cx="${cx}" cy="${cy}" r="${h*.1}" fill="#555"/>`;break;
+    case"switch":g=board("#e9eef3")+`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="none" stroke="${C.line}"/>`;for(let i=0;i<3;i++)g+=`<circle cx="${x+w*(i+1)/4}" cy="${cy}" r="${h*.17}" fill="${i==0?"#e5483c":"#10241b"}"/>`;break;
+    case"bulb":g=`<circle cx="${cx-14}" cy="${cy-4}" r="16" fill="#ffd166" opacity=".35"/><circle cx="${cx-14}" cy="${cy-4}" r="10" fill="#ffd166"/><rect x="${cx-19}" y="${cy+6}" width="10" height="8" rx="2" fill="#9aa7a0"/><circle cx="${cx+20}" cy="${cy}" r="14" fill="none" stroke="#5a6d63" stroke-width="2"/><path d="M${cx+20} ${cy}l0-12M${cx+20} ${cy}l10 7M${cx+20} ${cy}l-10 7" stroke="#5a6d63" stroke-width="3" stroke-linecap="round"/>`;break;
+    case"lock":g=`<rect x="${x+14}" y="${y+10}" width="${w-28}" height="${h-20}" rx="5" fill="#9aa7a0"/><rect x="${x+w-20}" y="${cy-4}" width="16" height="8" rx="2" fill="#6b7a72"/><circle cx="${x+30}" cy="${cy}" r="5" fill="#10241b"/>`;break;
+    case"battery":g=`<rect x="${x+10}" y="${y+12}" width="${w-28}" height="${h-24}" rx="5" fill="#10241b"/><rect x="${x+w-18}" y="${cy-5}" width="6" height="10" fill="#10241b"/><rect x="${x+14}" y="${y+16}" width="${(w-36)*.75}" height="${h-32}" rx="3" fill="#1f9d5c"/>`;break;
+    case"app":g=`<rect x="${cx-15}" y="${y+2}" width="30" height="${h-4}" rx="6" fill="#10241b"/><rect x="${cx-12}" y="${y+7}" width="24" height="${h-14}" rx="3" fill="#7fe0a9"/>`;break;
+    default:g=board("#1d4f9e")+`<rect x="${cx-9}" y="${cy-9}" width="18" height="18" rx="2" fill="#e9eef3"/><circle cx="${cx}" cy="${cy}" r="5" fill="#9aa7a0"/>`;
+  }
+  return `<g filter="url(#s${id})">${g}</g><rect x="${cx-(label.length*3.1+8)}" y="${y+h+6}" width="${label.length*6.2+16}" height="16" rx="8" fill="#fff" stroke="${C.line}"/>${txt(cx,y+h+17.5,label,{size:9,anchor:"middle"})}`;
+}
+
+function slideHardware(p){
+  const id=++uid,s=p.spec;let out=bgDefs(id);
+  const mw=118,mh=70,mx=240-mw/2,my=100;
+  const col=(arr,x)=>arr.map((m,i)=>{const n=arr.length,h=44,w=86,y=135-((n-1)*72)/2+i*72-h/2;return{...m,x,y,w,h,cx:x+w/2}});
+  const L=col(s.ins,30),R=col(s.outs,364);
+  const wc=["#e5483c","#10241b","#f2b705","#2b7de9"];
+  const wire=(x1,y1,x2,y2,k)=>`<path d="M${x1} ${y1}C${(x1+x2)/2} ${y1} ${(x1+x2)/2} ${y2} ${x2} ${y2}" stroke="${wc[k%4]}" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".9"/>`;
+  L.forEach((m,i)=>{for(let k=0;k<3;k++)out+=wire(m.x+m.w,m.y+m.h/2-6+k*6,mx+4,my+18+i*10+k*4,k+i)});
+  R.forEach((m,i)=>{for(let k=0;k<3;k++)out+=wire(mx+mw-4,my+18+i*10+k*4,m.x,m.y+m.h/2-6+k*6,k+i+1)});
+  out+=mcuBoard(mx,my,mw,mh,s.mcu,id);
+  [...L,...R].forEach(m=>out+=module(m[1],m.x,m.y,m.w,m.h,m[0],id));
+  out+=txt(18,24,"HARDWARE LAYOUT",{size:9,mono:1,fill:C.copper,ls:"1.5"});
+  return out;
+}
+function slideBlock(p){
+  const id=++uid,s=p.spec;let out=bgDefs(id,"#ffffff","#f1f6f3");
+  const box=(x,y,w,h,label,sub,dark)=>`<g filter="url(#s${id})"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${dark?C.mask:"#fff"}" stroke="${dark?C.mask:C.line}"/></g>${txt(x+w/2,y+h/2+(sub?-1:4),label,{size:dark?12:10,anchor:"middle",w:800,fill:dark?"#fff":C.ink})}${sub?txt(x+w/2,y+h/2+12,sub,{size:8,anchor:"middle",mono:1,fill:dark?"#7fe0a9":C.muted}):""}`;
+  const net=s.net, top=net?62:40, H=270-top-26;
+  const col=(arr,x)=>arr.map((m,i)=>{const n=arr.length,h=36,y=top+H/2-((n-1)*50)/2+i*50-h/2;return{label:m[0],x,y,w:120,h}});
+  const L=col(s.ins,22),R=col(s.outs,338);
+  const my=top+H/2-38;
+  L.forEach(m=>out+=`<line x1="${m.x+m.w}" y1="${m.y+m.h/2}" x2="${186}" y2="${my+38}" stroke="${C.copper}" stroke-width="1.6" marker-end="url(#m${id})"/>`);
+  R.forEach(m=>out+=`<line x1="${294}" y1="${my+38}" x2="${m.x-2}" y2="${m.y+m.h/2}" stroke="${C.copper}" stroke-width="1.6" marker-end="url(#m${id})"/>`);
+  if(net){out+=`<line x1="240" y1="${my}" x2="240" y2="48" stroke="${C.ok}" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#m${id})"/>`;out+=box(170,14,140,32,"☁ "+net,null,false);}
+  out+=box(188,my,104,76,s.mcu,"CONTROLLER",true);
+  L.forEach(m=>out+=box(m.x,m.y,m.w,m.h,m.label));R.forEach(m=>out+=box(m.x,m.y,m.w,m.h,m.label));
+  out+=txt(22,top-12,"INPUT",{size:8,mono:1,fill:C.muted,ls:"1.5"})+txt(458,top-12,"OUTPUT",{size:8,mono:1,fill:C.muted,ls:"1.5",anchor:"end"});
+  out+=txt(18,24,"BLOCK DIAGRAM",{size:9,mono:1,fill:C.copper,ls:"1.5"});
+  return out;
+}
+function spark(x,y,w,h,col){let d="";for(let i=0;i<=12;i++){const v=.5+Math.sin(i*.9)*.25+Math.sin(i*2.3)*.12;d+=(i?"L":"M")+(x+i*w/12).toFixed(1)+" "+(y+h-v*h).toFixed(1);}return `<path d="${d}L${x+w} ${y+h}L${x} ${y+h}Z" fill="${col}" opacity=".12"/><path d="${d}" stroke="${col}" stroke-width="2" fill="none" stroke-linecap="round"/>`;}
+function slideApp(p){
+  const id=++uid,a=p.spec.app;let out=bgDefs(id,"#eaf5ee","#f8faf9");
+  out+=`<circle cx="120" cy="200" r="90" fill="#c26b2b" opacity=".07"/><circle cx="380" cy="60" r="80" fill="#1f9d5c" opacity=".08"/>`;
+  const X=176,Y=12,W=128,H=246;
+  out+=`<g filter="url(#s${id})"><rect x="${X}" y="${Y}" width="${W}" height="${H}" rx="20" fill="#10241b"/><rect x="${X+5}" y="${Y+5}" width="${W-10}" height="${H-10}" rx="16" fill="#ffffff"/></g><rect x="${X+W/2-16}" y="${Y+9}" width="32" height="6" rx="3" fill="#10241b"/>`;
+  let y=Y+30;const ix=X+14,iw=W-28;
+  out+=txt(ix,y+8,a.title,{size:12,w:800});out+=`<circle cx="${ix+iw-4}" cy="${y+4}" r="3.5" fill="${C.ok}"/>`;y+=20;
+  if(a.alert){out+=`<rect x="${ix}" y="${y}" width="${iw}" height="20" rx="6" fill="#fde8e6"/>${txt(ix+7,y+13.5,"⚠ "+a.alert,{size:7.5,w:700,fill:"#c0392b"})}`;y+=28;}
+  a.rows.forEach((r,i)=>{out+=`<rect x="${ix}" y="${y}" width="${iw}" height="26" rx="7" fill="#f1f6f3"/>${txt(ix+8,y+16.5,r[0],{size:8,fill:C.muted})}${txt(ix+iw-8,y+17,r[1],{size:10,w:800,anchor:"end",mono:0})}`;y+=31;});
+  if(a.spark&&y<Y+H-60){out+=spark(ix,y+2,iw,32,C.ok);y+=42;}
+  if(a.slots){a.slots.forEach((v,i)=>{const sx=ix+(i%3)*(iw/3),sy=y+Math.floor(i/3)*24;out+=`<rect x="${sx+2}" y="${sy}" width="${iw/3-4}" height="20" rx="4" fill="${v?"#fde8e6":"#e3f6ea"}"/>${txt(sx+iw/6,sy+13.5,v?"BUSY":"FREE",{size:7,anchor:"middle",mono:1,fill:v?"#c0392b":C.ok})}`});y+=52;}
+  if(a.list){a.list.forEach(l=>{if(y>Y+H-24)return;out+=txt(ix+2,y+9,"● "+l,{size:7.5,fill:C.ink,w:600});y+=15;});}
+  (a.toggles||[]).forEach(t=>{if(y>Y+H-26)return;out+=txt(ix+2,y+12,t[0],{size:8.5,w:700})+`<rect x="${ix+iw-28}" y="${y+2}" width="26" height="14" rx="7" fill="${t[1]?C.ok:"#cfd8d3"}"/><circle cx="${ix+iw-(t[1]?9:21)}" cy="${y+9}" r="5" fill="#fff"/>`;y+=22;});
+  out+=txt(18,24,"APP SCREEN",{size:9,mono:1,fill:C.copper,ls:"1.5"});
+  out+=`<g filter="url(#s${id})"><rect x="330" y="96" width="132" height="54" rx="12" fill="#fff"/></g>${txt(344,116,"Live data",{size:8,mono:1,fill:C.muted})}${txt(344,136,p.spec.net||"Local display",{size:10.5,w:800})}`;
+  return out;
+}
+function slideKit(p){
+  const id=++uid;let out=bgDefs(id,"#0f3a29","#082419");
+  out=out.replace(/rgba\(15,58,41,\.12\)/,"rgba(255,255,255,.08)");
+  out+=txt(24,40,"WHAT YOU GET",{size:9,mono:1,fill:"#f0a464",ls:"1.5"})+txt(24,64,p.name,{size:15,w:800,fill:"#fff"});
+  const items=[["Tested hardware","⚙"],["Commented code","</>"],["Report (college format)","▤"],["PPT + viva Q&A","▶"]];
+  items.forEach((it,i)=>{const x=24+(i%2)*218,y=88+Math.floor(i/2)*82;out+=`<rect x="${x}" y="${y}" width="208" height="70" rx="12" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.14)"/><rect x="${x+14}" y="${y+17}" width="36" height="36" rx="9" fill="#c26b2b"/>${txt(x+32,y+40,it[1],{size:12,anchor:"middle",w:800,fill:"#fff"})}${txt(x+62,y+40,it[0],{size:11,w:700,fill:"#eaf2ed"})}`;});
+  return out;
+}
+const svgWrap=inner=>`<svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" role="img">${inner}</svg>`;
+function slidesFor(p){
+  const s=[];
+  (p.photos||[]).forEach(f=>s.push({img:`img/${f}.jpg`,cap:"Real photo"}));
+  if(!p.photos){s.push({svg:svgWrap(slideHardware(p)),cap:"Hardware layout"});}
+  s.push({svg:svgWrap(slideBlock(p)),cap:"Block diagram"});
+  if(!p.photos&&p.spec.app)s.push({svg:svgWrap(slideApp(p)),cap:"App screen"});
+  if(!p.photos)s.push({svg:svgWrap(slideKit(p)),cap:"What you get"});
+  return s;
+}
+
+/* ===================== */
+
+const waUrl = msg => "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+const hello = "Hi " + BRAND + "! ";
+document.querySelectorAll(".wa-link").forEach(a => { a.href = waUrl(hello + (a.dataset.msg || "I'd like to know more about your projects.")); });
+const pretty = "+" + WA_NUMBER.slice(0,2) + " " + WA_NUMBER.slice(2,7) + " " + WA_NUMBER.slice(7);
+document.getElementById("numText").textContent = pretty;
+document.getElementById("copyBtn").addEventListener("click", e => {
+  const b = e.currentTarget;
+  navigator.clipboard.writeText(pretty).then(() => { b.textContent = "Copied"; setTimeout(()=>b.textContent="Copy",1500); })
+    .catch(() => { const r = document.createRange(); r.selectNodeContents(document.getElementById("numText")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+});
+
+const inr = n => "₹" + n.toLocaleString("en-IN");
+const grid = document.getElementById("grid");
+function sliderHTML(p){
+  const sl=slidesFor(p);
+  return `<div class="slider" data-n="${sl.length}">
+    <span class="img-tag ${p.photos?'real':''}">${p.photos?'● Real build':'Concept render'}</span>
+    <div class="track" tabindex="0" aria-label="${p.name} images">${sl.map((s,i)=>`<figure class="slide">${s.img?`<img src="${s.img}" alt="${p.name}, photo ${i+1}" loading="lazy" width="480" height="270">`:s.svg}<figcaption>${s.cap}</figcaption></figure>`).join("")}</div>
+    <button class="sl-btn sl-prev" type="button" aria-label="Previous image">‹</button><button class="sl-btn sl-next" type="button" aria-label="Next image">›</button>
+    <div class="dots">${sl.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join("")}</div></div>`;
+}
+function render(cat){
+  grid.innerHTML = PROJECTS.filter(p => cat==="All" || p.cat===cat).map(p => `
+    <article class="card">
+      ${sliderHTML(p)}
+      <div class="card-top"><span class="desig">${p.id} · ${p.cat.toUpperCase()}</span>${p.yt?'<span class="tag hot">▶ Video demo</span>':'<span class="tag">Ready</span>'}</div>
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+      <div class="parts">${p.parts.map(x=>`<span>${x}</span>`).join("")}</div>
+      <div class="diff" aria-label="Difficulty ${p.diff} of 3">LEVEL ${[1,2,3].map(i=>`<i class="${i<=p.diff?'on':''}"></i>`).join("")}</div>
+      <div class="price-row">
+        <div><small>Code Kit</small><strong>${inr(p.code)}</strong></div>
+        <div><small>Full Kit</small><strong>${inr(p.kit)}</strong></div>
+      </div>
+      <a class="order" href="${waUrl(hello + 'I\'d like the "' + p.name + '" (' + p.id + ') project.')}" target="_blank" rel="noopener">Order this project →</a>
+      ${p.yt?`<a class="watch" href="${YT(p.yt)}" target="_blank" rel="noopener">▶ Watch it working on YouTube</a>`:""}
+    </article>`).join("");
+  grid.querySelectorAll(".slider").forEach(initSlider);
+}
+const sliders=new Set();
+function initSlider(el){
+  const tr=el.querySelector(".track"),dots=[...el.querySelectorAll(".dots i")],n=dots.length;
+  const idx=()=>Math.round(tr.scrollLeft/tr.clientWidth);
+  const go=i=>tr.scrollTo({left:((i+n)%n)*tr.clientWidth,behavior:"smooth"});
+  el.querySelector(".sl-prev").onclick=()=>{go(idx()-1);el.hold=Date.now();};
+  el.querySelector(".sl-next").onclick=()=>{go(idx()+1);el.hold=Date.now();};
+  tr.addEventListener("scroll",()=>{const i=idx();dots.forEach((d,k)=>d.classList.toggle("on",k===i));},{passive:true});
+  el.addEventListener("pointerenter",()=>el.over=true);el.addEventListener("pointerleave",()=>el.over=false);
+  tr.addEventListener("touchstart",()=>el.hold=Date.now(),{passive:true});
+  el.go=go;el.idx=idx;sliders.add(el);io.observe(el);
+}
+const io=new IntersectionObserver(es=>es.forEach(e=>e.target.vis=e.isIntersecting),{threshold:.6});
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+  let t=0;setInterval(()=>{t++;sliders.forEach(el=>{if(!el.isConnected){sliders.delete(el);return;}
+    if(el.vis&&!el.over&&!(el.hold&&Date.now()-el.hold<8000)&&((t+[...sliders].indexOf(el))%2===0))el.go(el.idx()+1);});},2200);
+}
+const cats = ["All", ...new Set(PROJECTS.map(p=>p.cat))];
+const fBox = document.getElementById("filters");
+fBox.innerHTML = cats.map((c,i)=>`<button class="chip" type="button" aria-pressed="${i===0}" data-c="${c}">${c}</button>`).join("");
+fBox.addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if(!b) return;
+  fBox.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  render(b.dataset.c);
+});
+render("All");
+
+/* custom request -> whatsapp */
+const ids = ["fName","fCollege","fType","fDate","fIdea"];
+const sendReq = document.getElementById("sendReq");
+function buildReq(){
+  const v = Object.fromEntries(ids.map(i=>[i,document.getElementById(i).value.trim()]));
+  const msg = hello + "I'd like a custom project.\n" +
+    (v.fName?`Name: ${v.fName}\n`:"") + (v.fCollege?`College/Branch: ${v.fCollege}\n`:"") +
+    `Type: ${v.fType}\n` + (v.fDate?`Submission: ${v.fDate}\n`:"") + (v.fIdea?`Idea: ${v.fIdea}`:"");
+  sendReq.href = waUrl(msg);
+}
+ids.forEach(i=>document.getElementById(i).addEventListener("input", buildReq));
+document.getElementById("reqForm").addEventListener("submit", e=>e.preventDefault());
+buildReq();
+
+/* PCB videos, tabs, gallery lightbox */
+(function(){
+  const vids=[...document.querySelectorAll(".pcb-vid")],tabs=[...document.querySelectorAll(".wtab")];
+  const caps=["3D model · rotating view","Schematic → board layout"];
+  const btn=document.getElementById("pcbPlay"),cap=document.getElementById("pcbCap");
+  let cur=0,paused=false,visible=false;
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce)paused=true;
+  const sync=()=>{vids.forEach((v,i)=>{v.classList.toggle("on",i===cur);if(i===cur&&visible&&!paused){v.preload="auto";v.play().catch(()=>{});}else v.pause();});
+    btn.textContent=paused?"▶":"❚❚";btn.setAttribute("aria-label",paused?"Play video":"Pause video");cap.textContent=caps[cur];};
+  tabs.forEach(t=>t.addEventListener("click",()=>{cur=+t.dataset.v;tabs.forEach(x=>x.setAttribute("aria-selected",x===t));sync();}));
+  btn.addEventListener("click",()=>{paused=!paused;sync();});
+  vids.forEach((v,i)=>v.addEventListener("timeupdate",()=>{ if(i===cur&&!paused&&v.duration&&v.currentTime>v.duration-.35&&!v.dataset.sw){v.dataset.sw=1;setTimeout(()=>delete v.dataset.sw,1500);cur=(cur+1)%vids.length;tabs.forEach((x,k)=>x.setAttribute("aria-selected",k===cur));vids[cur].currentTime=0;sync();}}));
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting;sync();},{threshold:.35}).observe(document.querySelector(".win"));
+  const lb=document.getElementById("lb"),li=document.getElementById("lbImg");
+  document.getElementById("pcbGal").addEventListener("click",e=>{const b=e.target.closest(".gi");if(!b)return;li.src=b.dataset.src;li.alt=b.querySelector("img").alt;lb.hidden=false;});
+  lb.addEventListener("click",()=>{lb.hidden=true;});
+  addEventListener("keydown",e=>{if(e.key==="Escape")lb.hidden=true;});
+})();
+
+/* hero showcase: live values + mouse tilt */
+(function(){
+  const sc=document.getElementById("showcase");if(!sc)return;
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pts=[];for(let i=0;i<14;i++)pts.push(.5+Math.sin(i*.8)*.25);
+  const draw=()=>{document.getElementById("hSpark").setAttribute("d",pts.map((v,i)=>(i?"L":"M")+(i*120/13).toFixed(1)+" "+(28-v*26).toFixed(1)).join(""));};
+  let t=0,on=true;draw();
+  if(!reduce)setInterval(()=>{t++;const v=27+Math.sin(t*.35)*.9+Math.random()*.2;
+    document.getElementById("hTemp").textContent=v.toFixed(1)+"°C";pts.shift();pts.push((v-25.8)/2.6);draw();
+    document.getElementById("hRssi").textContent=-(46+Math.round(Math.random()*5))+" dBm";
+    if(t%4===0){on=!on;document.getElementById("hRelay").textContent=on?"ON":"OFF";document.getElementById("hTog").classList.toggle("on",on);}
+  },1200);
+  if(!reduce&&matchMedia("(hover:hover)").matches){
+    const b=sc.querySelector(".board3d");
+    sc.closest(".hero").addEventListener("pointermove",e=>{const r=sc.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      b.style.setProperty("--tx",(x*10).toFixed(2)+"deg");b.style.setProperty("--ty",(-y*10).toFixed(2)+"deg");});
+  }
+})();
+</script>
+
+</body>
+</html>
